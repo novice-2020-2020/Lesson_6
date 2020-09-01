@@ -17,8 +17,8 @@ const cards = {
 const BLACKJACK = 21;
 const DEALERLIMIT = 17;
 const VALIDHITORSTAYS = ['hit', 'h', 'stay', 's'];
-let playerCounter = 0;
-let dealerCounter = 0;
+let playerTurnCounter = 0;
+let dealerTurnCounter = 0;
 let playerCards = [];
 let playerScores = [];
 let dealerCards = [];
@@ -92,22 +92,21 @@ function playerHitOrStay() {
   }
 }
 
-function playerPlays(deck, playerCards, playerScores, playerCounter) {
-  playerCounter += 1;
+function playerPlays(deck, playerCards, playerScores, playerTurnCounter) {
+  playerTurnCounter += 1;
   while (true) {
     if (isBlackJack(playerScores)) {
       displayInformation(playerCards, playerScores);
-      console.log(`${currentChance} hit BlackJack`);
+      console.log('You hit BlackJack');
       break;
     } else if (isBust(playerScores)) {
-      console.log('Player is bust');
+      console.log('Your score went over 21, you\'re bust');
       break;
     } else if (playerHitOrStay() === 's') {
-      // displayInformation(playerCards, playerScores);
       console.log(`\nPlayer stayed the game. The Player's deck is (${playerCards.join(", ")}) and the score is ${calcScore(playerScores)}\n`);
       break;
     } else {
-      dealCards(deck, playerCards, playerScores, playerCounter);
+      dealCards(deck, playerCards, playerScores, playerTurnCounter);
       displayInformation(playerCards, playerScores);
     }
   }
@@ -116,16 +115,16 @@ function playerPlays(deck, playerCards, playerScores, playerCounter) {
 
 function dealerHitOrStay(deck, dealerScores) {
   while (calcScore(dealerScores) <= DEALERLIMIT) {
-    dealCards(deck, dealerCards, dealerScores, dealerCounter);
+    dealCards(deck, dealerCards, dealerScores, dealerTurnCounter);
     calcScore(dealerScores);
   }
 }
 
 function dealerPlays(deck, dealerCards, dealerScores) {
-  dealerCounter += 1;
+  dealerTurnCounter += 1;
   while (calcScore(dealerScores) <= DEALERLIMIT || !isBust(dealerScores) || !isBlackJack(dealerScores)) {
     dealerHitOrStay(deck, dealerScores);
-    displayInformation(dealerCards, dealerScores, dealerCounter, 'Dealer');
+    displayInformation(dealerCards, dealerScores, dealerTurnCounter, 'Dealer');
     if (isBust(dealerScores)) {
       console.log('Dealer bust');
       break;
@@ -159,14 +158,16 @@ function playTwentyOne() {
   console.clear();
   let deck = initializeDeck();
   firstMove(deck, playerCards, playerScores);
-  displayInformation(playerCards, playerScores, playerCounter);
+  displayInformation(playerCards, playerScores, playerTurnCounter);
   firstMove(deck, dealerCards, dealerScores);
-  displayInformation(dealerCards, dealerScores, dealerCounter, 'Dealer');
-  playerPlays(deck, playerCards, playerScores, playerCounter);
+  displayInformation(dealerCards, dealerScores, dealerTurnCounter, 'Dealer');
+  playerPlays(deck, playerCards, playerScores, playerTurnCounter);
   if (isBust(playerScores)) {
+    console.log(`\nYour final score is ${calcScore(playerScores)}, while the dealer's final score is ${calcScore(dealerScores)}`);
     return 'Dealer Wins!';
   }
   dealerPlays(deck, dealerCards, dealerScores);
+  console.log(`\nYour final score is ${calcScore(playerScores)}, while the dealer's final score is ${calcScore(dealerScores)}`);
   return (result(playerScores, dealerScores));
 }
 
