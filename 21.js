@@ -84,7 +84,7 @@ function playerHitOrStay() {
   let decision = readline.question("\nWould you like to Hit or Stay: ").toLowerCase().trim();
   while (true) {
     if (VALIDHITORSTAYS.includes(decision)) {
-      if (decision[0] === 'h' || decision[0] === 's') return decision;
+      if (decision[0] === 'h' || decision[0] === 's') return decision[0];
     } else {
 
       decision = readline.question("\nNot a valid response, would you like to Hit or Stay: ").toLowerCase().trim();
