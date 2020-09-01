@@ -139,19 +139,19 @@ function dealerPlays(deck, dealerCards, dealerScores) {
 
 function result(playerScores, dealerScores) {
   if (isBust(playerScores)) {
-    return `Dealer Wins`;
+    return 'Dealer Wins';
   } else if (isBust(dealerScores) && !isBust(playerScores)) {
-    return `Player Wins`;
+    return 'Player Wins';
   } else if (isBlackJack(dealerScores) && !isBlackJack(playerScores)) {
-    return `Dealer Wins`;
+    return 'Dealer Wins';
   } else if (!isBlackJack(dealerScores) && isBlackJack(playerScores)) {
-    return `Player Wins`;
+    return 'Player Wins';
   } else if (calcScore(playerScores) > calcScore(dealerScores)) {
-    return `Player Wins`;
+    return 'Player Wins';
   } else if (calcScore(playerScores) < calcScore(dealerScores)) {
-    return `Dealer Wins`;
+    return 'Dealer Wins';
   } else {
-    return `Tie!`;
+    return 'Tie!';
   }
 }
 
